@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { createTicket, fetchAllTickets, updateTicket } from './service/ticketService';
+import {
+  createTicket,
+  deleteTicket,
+  fetchAllTickets,
+  updateTicket,
+} from "./service/ticketService";
 import TicketForm from "./component/TicketForm/TicketForm";
 import { formatDate } from "./util/dateUtil";
 
@@ -43,6 +48,20 @@ function App() {
     setCurrentTicket(savedTicket);
   };
 
+  const sendDeleteRequest = async (ticket) => {
+    if (!ticket?.id) {
+      return;
+    }
+
+    const result = await deleteTicket(ticket.id);
+    if (!result) {
+      return;
+    }
+
+    getAllTickets();
+    setCurrentTicket({});
+  };
+
   useEffect(() => {
     getAllTickets();
   }, []);
@@ -75,6 +94,7 @@ function App() {
             <p>{ticket.status}</p>
             <p>{ticket.create_date}</p>
             <p>{ticket.update_date}</p>
+            <button onClick={() => sendDeleteRequest(ticket)}>Delete</button>
           </div> 
         ))
       )}
