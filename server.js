@@ -1,6 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2');
-
+const cors = require('cors'); 
 
 const app= express();
 const pool = mysql.createPool({
@@ -11,6 +11,8 @@ const pool = mysql.createPool({
     connectionLimit: 10,
 });
 
+
+app.use(cors());  // Allow all origins
 
 
 app.use(express.json());
@@ -60,6 +62,7 @@ app.post("/ticket", (req, res) => {
     );
 });
 
+
   
   app.delete("/ticket/:id", (req, res) => {
     const id = req.params.id;
@@ -100,6 +103,6 @@ app.post("/ticket", (req, res) => {
   });
   
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000')
+app.listen(3001, () => {
+    console.log(`Server started on port 3001`)
 });
